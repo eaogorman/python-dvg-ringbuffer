@@ -406,14 +406,14 @@ class RingBuffer(Sequence):
 
         rb = RingBuffer(3, dtype=int)  # --> rb = []
         rb.extend([1, 2, 3])           # --> rb = [1, 2, 3]
-        rb.pop()                       # --> rb = [1, 2], res = [3]
-        rb.pop(n=2)                      # --> rb = [], res = [1, 2]
+        res = rb.pop()                       # --> rb = [1, 2], res = [3]
+        res = rb.pop(n=2)                      # --> rb = [], res = [1, 2]
 
         # EXPECTED BEHAVIOR
         rb = RingBuffer(3, dtype=int)  # --> rb = []
         rb.extend([1, 2, 3])           # --> rb = [1, 2, 3]
-        rb.pop(n=2, n_overlap=1)       # --> rb = [1, 2], res = [2, 3]
-        rb.pop(n=2, n_overlap=1)       # --> rb = [1], res = [1, 2]
+        res = rb.pop(n=2, n_overlap=1)       # --> rb = [1, 2], res = [2, 3]
+        res = rb.pop(n=2, n_overlap=1)       # --> rb = [1], res = [1, 2]
         
         TODO: use case: n=2, n_overlap=2
         """
