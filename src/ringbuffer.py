@@ -421,7 +421,7 @@ class RingBuffer(Sequence):
             raise IndexError("Pop from an empty RingBuffer.")
         self._unwrap_buffer_is_dirty = True
         self._idx_R -= n
-        if n != 1:
+        if n > 1:
             res = self._arr[(self._idx_R % self._N):(self._idx_R % self._N + n)]
         else:
             res = self._arr[(self._idx_R % self._N)]
@@ -436,7 +436,7 @@ class RingBuffer(Sequence):
         rb = RingBuffer(3, dtype=int)  # --> rb = []
         rb.extend([1, 2, 3])           # --> rb = [1, 2, 3]
         res = rb.popleft()             # --> rb = [2, 3], res = [1]
-        res = rb.popleft(n=2)            # --> rb = [1], res = [2, 3]
+        res = rb.popleft(n=2)            # --> rb = [], res = [2, 3]
     
         # EXPECTED BEHAVIOR
         rb = RingBuffer(3, dtype=int)  # --> rb = []
@@ -449,12 +449,12 @@ class RingBuffer(Sequence):
         if len(self) == 0:
             raise IndexError("Pop from an empty RingBuffer.")
         self._unwrap_buffer_is_dirty = True
-        if n != 1:
-            res = self._arr[self._idx_L:self._idx_L + n]
+        if n > 1:
+            res = self._arr[self._idx_L:(self._idx_L + n)]
         else: 
             res = self._arr[self._idx_L]
         if n_overlap > 0:
-            self._idx_L += n_overlap
+            self._idx_L += (n - n_overlap)
         else: 
             self._idx_L += n
         self._fix_indices()
